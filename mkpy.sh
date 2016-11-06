@@ -12,7 +12,7 @@ fi
 touch $file
 chmod u+x $file
 (cat <<EOF
-#!/bin/python
+#!/usr/bin/python
 #Filename:$file
 #Function:
 #Author:Huang Weihang
