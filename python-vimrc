@@ -1,0 +1,239 @@
+"python function:
+",t nerdtree left side
+",g tag desc right side
+",r run script
+"num,c+space comment
+"ctrl+h j k l move windows
+"space fold or unfold function
+"
+"basic config
+set encoding=utf-8
+set nu!
+set tabstop=4
+set splitright
+" Enable folding
+set foldmethod=indent
+set foldlevel=99
+" Enable folding with the spacebar
+nnoremap <space> za
+" always show status bar
+set ls=2
+autocmd InsertEnter * se cul    " 用浅色高亮当前行  
+set ruler                   " 打开状态栏标尺
+set cursorline              " 突出显示当前行
+"hi CursorLine   cterm=NONE  ctermbg=darkmagenta  ctermfg=NONE 
+"hi CursorColumn cterm=underline ctermbg=darkmagenta ctermfg=white 
+" 设置在状态行显示的信息
+""set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\%{strftime(\"%m/%d/%y\ -\ %H:%M\")}
+
+"自动补全
+:inoremap ( ()<ESC>i
+:inoremap { {}<ESC>i
+:inoremap [ []<ESC>i
+:inoremap " ""<ESC>i
+:inoremap ' ''<ESC>i
+
+let g:AutoOpenWinManager = 1
+
+
+"当打开vim且没有文件时自动打开NERDTree
+autocmd vimenter * if !argc() | NERDTree | endif
+"" 只剩 NERDTree时自动关闭
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+" better backup, swap and undos storage
+set directory=~/.vim/dirs/tmp     " directory to place swap files in
+set backup                        " make backup files
+set backupdir=~/.vim/dirs/backups " where to put backup files
+set undofile                      " persistent undos - undo after you re-open the file
+set undodir=~/.vim/dirs/undos
+set viminfo+=n~/.vim/dirs/viminfo
+" store yankring history file there too
+let g:yankring_history_dir = '~/.vim/dirs/'
+" create needed directories if they don't exist
+if !isdirectory(&backupdir)
+    call mkdir(&backupdir, "p")
+endif
+if !isdirectory(&directory)
+    call mkdir(&directory, "p")
+endif
+if !isdirectory(&undodir)
+    call mkdir(&undodir, "p")
+endif
+
+"split navigations
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+set nocompatible              " required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+" Add all your plugins here (note older versions of Vundle used Bundle
+" instead of Plugin)
+Plugin 'gmarik/Vundle.vim'
+
+Plugin 'tmhedberg/SimpylFold'
+
+Plugin 'vim-scripts/indentpython.vim'
+
+" Python and other languages code checker
+Plugin 'scrooloose/syntastic'
+
+Plugin 'nvie/vim-flake8'
+
+Plugin 'jnurmine/Zenburn'
+
+Plugin 'altercation/vim-colors-solarized'
+
+" Code and files fuzzy finder
+Plugin 'kien/ctrlp.vim'
+" Extension to ctrlp, for fuzzy command finder
+Plugin 'fisadev/vim-ctrlp-cmdpalette'
+" Git integration
+Plugin 'motemen/git-vim'
+" Consoles as buffers
+Plugin 'rosenfeld/conque-term'
+" Automatically sort python imports
+Plugin 'fisadev/vim-isort'
+" Git/mercurial/others diff icons on the side of the file lines
+Plugin 'mhinz/vim-signify'
+" Pending tasks list
+Plugin 'fisadev/FixedTaskList.vim'
+" Class/module browser
+Plugin 'scrooloose/nerdcommenter'
+" Better file browser
+Plugin 'scrooloose/nerdtree'
+" Code commenter
+Plugin 'majutsushi/tagbar'
+
+"Plugin 'Valloric/YouCompleteMe'
+
+Plugin 'rkulla/pydiction'
+"Plugin statusline
+Plugin 'Lokaltog/vim-powerline'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+let g:SimpylFold_docstring_preview=1
+
+let g:pydiction_location = '~/.vim/bundle/pydiction/complete-dict'
+
+au BufNewFile,BufRead *.py
+\ set tabstop=4 |
+\ set softtabstop=4 |
+\ set shiftwidth=4 |
+\ set textwidth=79 |
+\ set expandtab |
+\ set autoindent |
+\ set fileformat=unix
+au BufNewFile,BufRead *.js,*.html,*.css
+    \ set tabstop=2 |
+    \ set softtabstop=2 |
+    \ set shiftwidth=2 |
+
+"set statusline
+set laststatus=2
+let g:Powerline_symbols='unicode'
+
+let python_highlight_all=1
+syntax on
+
+"if has('gui_running')
+"    set background=dark
+"    colorscheme solarized
+"else
+"    colorscheme Zenburn
+"endif
+"
+" 设置NerdTree
+map <F2> :NERDTreeMirror<CR>
+map <F2> :NERDTreeMirror<CR>
+map ,t :F2> :NERDTreeToggle<CR>
+map ,t : :NERDTreeToggle<CR>
+" NERDTree.vim
+let g:NERDTreeWinPos="left"
+let g:NERDTreeWinSize=25
+let g:NERDTreeShowLineNumbers=1
+let g:neocomplcache_enable_at_startup = 1
+" don;t show these file types
+let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
+
+" nerdcommenter ------------------------
+let mapleader=','
+
+" Tasklist ------------------------------
+" show pending tasks list
+map <F3> :TaskList<CR>
+
+" Tagbar ----------------------------- 
+" toggle tagbar display
+map <F4> :TagbarToggle<CR>
+map ,g :TagbarToggle<CR>
+" autofocus on tagbar open
+let g:tagbar_autofocus = 1
+
+" TabMan ------------------------------
+" mappings to toggle display, and to focus on it
+let g:tabman_toggle = 'tl'
+let g:tabman_focus  = 'tf'
+
+" Signify ------------------------------
+" this first setting decides in which order try to guess your current vcs
+" UPDATE it to reflect your preferences, it will speed up opening files
+let g:signify_vcs_list = [ 'git', 'hg' ]
+" mappings to jump to changed blocks
+nmap <leader>sn <plug>(signify-next-hunk)
+nmap <leader>sp <plug>(signify-prev-hunk)
+" nicer colors
+highlight DiffAdd           cterm=bold ctermbg=none ctermfg=119
+highlight DiffDelete        cterm=bold ctermbg=none ctermfg=167
+highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
+highlight SignifySignAdd    cterm=bold ctermbg=237  ctermfg=119
+highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
+highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
+
+"" show list of errors and warnings on the current file
+"nmap <leader>e :Errors<CR>
+"" check also when just opened the file
+"let g:syntastic_check_on_open = 1
+"" don't put icons on the sign column (it hides the vcs status icons of signify)
+"let g:syntastic_enable_signs = 0
+"
+"" Window Chooser ------------------------------
+"" mapping
+"nmap  -  <Plug>(choosewin)
+"" show big letters
+"let g:choosewin_overlay_enable = 1
+
+"quickly Run
+map <F5> :call CompileRunGcc()<CR>
+map ,r :call CompileRunGcc()<CR>
+func! CompileRunGcc()
+    exec "w"
+    if &filetype == 'sh'
+		:!time bash %
+    elseif &filetype == 'python'
+		exec "!time python %"
+	endif
+endfunc
+
+map ,s :call RunSpark()<CR>
+func! RunSpark()
+	exec "w"
+	if $filetype == 'python'
+			exec "!spark-submit %"
+	endif
+endfunc
+
